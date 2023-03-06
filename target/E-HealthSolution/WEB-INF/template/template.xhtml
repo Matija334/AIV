@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+    <title><ui:insert name="title">E-Health Solution</ui:insert></title>
+    <ui:insert name="style"></ui:insert>
+</h:head>
+<h:body>
+    <div id="menu">
+        <ui:insert name="menu">
+            <h:form>
+                <p:menubar>
+                    <p:menuitem value="Home" url="index.xhtml" icon="pi pi-home"/>
+                    <p:submenu label="Patients" icon="pi pi-bars">
+                        <p:menuitem value="Show all patients" url="allPatients.xhtml" icon="pi pi-list"/>
+                        <p:menuitem value="Add new patient" url="formPatient.xhtml?email=NULL" icon="pi pi-user-plus"/>
+                    </p:submenu>
+                    <p:submenu label="Doctors" icon="pi pi-bars">
+                        <p:menuitem value="Show all doctors" url="allDoctors.xhtml" icon="pi pi-list"/>
+                        <p:menuitem value="Add new doctor" url="formDoctor.xhtml?email=NULL" icon="pi pi-user-plus"/>
+                    </p:submenu>
+                    <p:menuitem value="Clinic for unspecified patients" url="PatientsWithNoDoctor.xhtml"
+                                icon="pi pi-list"/>
+                </p:menubar>
+            </h:form>
+            <br />
+        </ui:insert>
+    </div>
+    <div id="content">
+        <ui:insert name="content">
+
+        </ui:insert>
+    </div>
+</h:body>
+</html>
+

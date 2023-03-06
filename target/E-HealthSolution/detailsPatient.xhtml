@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Details patient</title>
+    <style>
+        body {
+            background-color: #f3fafc;
+            font-family: "Verdana", sans-serif;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+    </style>
+</h:head>
+<h:body>
+    <f:metadata>
+        <f:viewParam name="email" value="#{patients.selectedEmail}"/>
+    </f:metadata>
+    <h:form>
+        <p:menubar>
+            <p:menuitem value="Home" url="index.xhtml" icon="pi pi-home"/>
+            <p:submenu label="Patients" icon="pi pi-bars">
+                <p:menuitem value="Show all patients" url="allPatients.xhtml" icon="pi pi-list"/>
+                <p:menuitem value="Add new patient" url="formPatient.xhtml?email=NULL" icon="pi pi-user-plus"/>
+            </p:submenu>
+            <p:submenu label="Doctors" icon="pi pi-bars">
+                <p:menuitem value="Show all doctors" url="allDoctors.xhtml" icon="pi pi-list"/>
+                <p:menuitem value="Add new doctor" url="formDoctor.xhtml?email=NULL" icon="pi pi-user-plus"/>
+            </p:submenu>
+            <p:menuitem value="Clinic for unspecified patients" url="PatientsWithNoDoctor.xhtml" icon="pi pi-list"/>
+        </p:menubar>
+    </h:form>
+    <br/>
+    <p:panel header="Patient details">
+        <h:form>
+            <b><p:outputLabel>Name:</p:outputLabel></b> <p:outputLabel>#{patients.patient.name}</p:outputLabel>
+            <br/>
+            <b><p:outputLabel>Last name:</p:outputLabel></b>
+            <p:outputLabel>#{patients.patient.lastName}</p:outputLabel>
+            <br/>
+            <b><p:outputLabel>E-mail:</p:outputLabel></b> <p:outputLabel>#{patients.patient.email}</p:outputLabel>
+            <br/>
+            <b><p:outputLabel>Birthday:</p:outputLabel></b> <p:outputLabel>#{patients.patient.birthday}</p:outputLabel>
+            <br/>
+            <b><p:outputLabel>Info:</p:outputLabel></b> <p:outputLabel>#{patients.patient.info}</p:outputLabel>
+            <br/>
+            <b><p:outputLabel>Personal doctor:</p:outputLabel></b>
+            <p:outputLabel>#{patients.patient.personalDoctor.name} #{patients.patient.personalDoctor.lastName}</p:outputLabel>
+            <br/>
+        </h:form>
+    </p:panel>
+</h:body>
+</html>
+
+
+
+
+
+
