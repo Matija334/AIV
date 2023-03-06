@@ -2,74 +2,72 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-<h:head>
-    <title>Add doctor</title>
-    <style>
-        body {
-            background-color: #f3fafc;
-            font-family: "Verdana", sans-serif;
-        }
+<ui:composition template="WEB-INF/template/template.xhtml ">
+    <ui:define name="title">Add doctor</ui:define>
+    <ui:define name="style">
+        <style>
+            body {
+                background-color: #f3fafc;
+                font-family: "Verdana", sans-serif;
+            }
 
-        form {
-            display: flex;
-            flex-direction: column;
-            text-align: left;
-        }
+            form {
+                display: flex;
+                flex-direction: column;
+                text-align: left;
+            }
 
-        .form-input {
-            width: 30%;
-        }
-    </style>
-</h:head>
-<h:body>
-    <f:metadata>
-        <f:viewParam name="email" value="#{doctors.selectedEmail}"/>
-    </f:metadata>
-    <h:form>
-        <p:menubar>
-            <p:menuitem value="Home" url="index.xhtml" icon="pi pi-home"/>
-            <p:submenu label="Patients" icon="pi pi-bars">
-                <p:menuitem value="Show all patients" url="allPatients.xhtml" icon="pi pi-list"/>
-                <p:menuitem value="Add new patient" url="formPatient.xhtml?email=NULL" icon="pi pi-user-plus"/>
-            </p:submenu>
-            <p:submenu label="Doctors" icon="pi pi-bars">
-                <p:menuitem value="Show all doctors" url="allDoctors.xhtml" icon="pi pi-list"/>
-                <p:menuitem value="Add new doctor" url="formDoctor.xhtml?email=NULL" icon="pi pi-user-plus"/>
-            </p:submenu>
-            <p:menuitem value="Clinic for unspecified patients" url="PatientsWithNoDoctor.xhtml" icon="pi pi-list"/>
-        </p:menubar>
-    </h:form>
-    <br/>
-    <p:panel header="Add doctor">
-        <h:form>
-            <p:outputLabel for="name">Name:</p:outputLabel>
-            <p:inputText styleClass="form-input" id="name" value="#{doctors.doctor.name}"/>
-            <br/>
-            <p:outputLabel for="last_name">Last name:</p:outputLabel>
-            <p:inputText styleClass="form-input" id="last_name" value="#{doctors.doctor.lastName}"/>
-            <br/>
-            <p:outputLabel for="email">Email:</p:outputLabel>
-            <p:inputText styleClass="form-input" id="email" value="#{doctors.doctor.email}"/>
-            <br/>
-            <p:outputLabel for="patient_quota">Patient quota:</p:outputLabel>
-            <p:spinner styleClass="form-input" id="patient_quota" value="#{doctors.doctor.patientQuota}" min="0"
-                       max="100" stepFactor="1"/>
-            <br/>
-            <p:commandButton styleClass="form-input" value="Save"
-                             actionListener="#{doctors.saveDoctor()}" action="allDoctors.xhtml?faces-redirect=true" >
-                <p:confirm header="Confirmation"
-                           message="Do you want to save this doctor?"
-                           icon="pi pi-info-circle"/>
-            </p:commandButton>
-            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
-                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
-                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes"/>
-            </p:confirmDialog>
-        </h:form>
-    </p:panel>
-</h:body>
+            .form-input {
+                width: 30%;
+            }
+        </style>
+    </ui:define>
+    <ui:define name="content">
+        <f:metadata>
+            <f:viewParam name="email" value="#{doctors.selectedEmail}"/>
+        </f:metadata>
+        <p:panel header="Add doctor">
+            <h:form>
+                <p:outputLabel for="name">Name:</p:outputLabel>
+                <p:inputText styleClass="form-input" id="name" value="#{doctors.doctor.name}"/>
+                <br/>
+                <p:outputLabel for="last_name">Last name:</p:outputLabel>
+                <p:inputText styleClass="form-input" id="last_name" value="#{doctors.doctor.lastName}"/>
+                <br/>
+                <p:outputLabel for="email">Email:</p:outputLabel>
+                <p:inputText styleClass="form-input" id="email" value="#{doctors.doctor.email}"/>
+                <br/>
+                <p:outputLabel for="patient_quota">Patient quota:</p:outputLabel>
+                <p:spinner styleClass="form-input" id="patient_quota" value="#{doctors.doctor.patientQuota}" min="0"
+                           max="100" stepFactor="1"/>
+                <br/>
+                <p:commandButton styleClass="form-input" value="Save"
+                                 actionListener="#{doctors.saveDoctor()}" action="allDoctors.xhtml?faces-redirect=true">
+                    <p:confirm header="Confirmation"
+                               message="Do you want to save this doctor?"
+                               icon="pi pi-info-circle"/>
+                </p:commandButton>
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes"/>
+                </p:confirmDialog>
+            </h:form>
+        </p:panel>
+    </ui:define>
+</ui:composition>
 </html>
+
+
+
+
+
+
+
+
+
+
 
 
 
