@@ -34,7 +34,6 @@ public class PatientMemoryDao implements PatientDao, Serializable {
     }
 
 
-
     @Override
     public List<Patient> getAll() {
         log.info("DAO: get all");
@@ -45,7 +44,6 @@ public class PatientMemoryDao implements PatientDao, Serializable {
     public Patient find(String email) {
         log.info("DAO: finding " + email);
         for (Patient patient : patientList) {
-            log.info("DAO: checking patient " + patient.getEmail());
             if (patient.getEmail().equals(email))
                 return patient;
         }
@@ -54,23 +52,30 @@ public class PatientMemoryDao implements PatientDao, Serializable {
 
     @Override
     public void save(Patient patient, String doctorEmail) {
-
+        //Removing old personal doctor
         Doctor exDoc = patient.getPersonalDoctor();
-        if (exDoc != null) {
+        if (exDoc != null)
             exDoc.removePatient(patient);
-        }
 
+        //Getting dao
         DoctorMemoryDao doctorDao = DoctorMemoryDao.getInstance();
+
+        //Setting new personal doctor. Find by email
         Doctor selectedDoctor = doctorDao.find(doctorEmail);
         patient.setPersonalDoctor(selectedDoctor);
 
         log.info("DAO: saving " + patient);
+
+        //If patient is being edited, first delete
         if (find(patient.getEmail()) != null) {
             log.info("DAO: editing " + patient);
             delete(patient);
         }
+
+        //Adding new patient
         patientList.add(patient);
 
+        //If patient selected personal doctor, add patient to patient list of doctor
         if (patient.getPersonalDoctor() != null) {
             selectedDoctor = doctorDao.find(patient.getPersonalDoctor().getEmail());
             selectedDoctor.addPatient(patient);
@@ -82,6 +87,8 @@ public class PatientMemoryDao implements PatientDao, Serializable {
     public void delete(Patient patient) {
         DoctorMemoryDao doctorDao = DoctorMemoryDao.getInstance();
         patientList.remove(patient);
+
+        //If patient had personal doctor, remove patient from patient list of doctor
         if (patient.getPersonalDoctor() != null) {
             Doctor selectedDoctor = doctorDao.find(patient.getPersonalDoctor().getEmail());
             selectedDoctor.removePatient(patient);

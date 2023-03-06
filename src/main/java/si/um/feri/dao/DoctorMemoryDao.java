@@ -49,11 +49,17 @@ public class DoctorMemoryDao implements DoctorDao, Serializable {
     @Override
     public void save(Doctor doctor) {
         log.info("DAO: saving " + doctor);
+
+        //If doctor is being edited, first delete
         if (find(doctor.getEmail()) != null) {
             log.info("DAO: editing " + doctor);
             delete(doctor);
         }
+
+        //Adding new doctor
         doctorList.add(doctor);
+
+        //Add 'new' doctor to all patients that were on doctor's list
         if (doctor.getPatientList().size() != 0) {
             for (Patient patient : doctor.getPatientList()) {
                 Patient selectedPatient = patientDao.find(patient.getEmail());
