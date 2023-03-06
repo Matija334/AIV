@@ -1,5 +1,6 @@
 package si.um.feri.dao;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Inject;
 import si.um.feri.vao.Doctor;
@@ -53,6 +54,12 @@ public class DoctorMemoryDao implements DoctorDao, Serializable {
             delete(doctor);
         }
         doctorList.add(doctor);
+        if (doctor.getPatientList().size() != 0) {
+            for (Patient patient : doctor.getPatientList()) {
+                Patient selectedPatient = patientDao.find(patient.getEmail());
+                selectedPatient.setPersonalDoctor(doctor);
+            }
+        }
     }
 
     @Override

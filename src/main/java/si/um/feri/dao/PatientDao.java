@@ -9,7 +9,7 @@ public interface PatientDao {
 
     Patient find(String email);
 
-    void save(Patient patient);
+    void save(Patient patient, String doctorEmail);
 
     void delete(Patient patient);
 }

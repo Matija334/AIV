@@ -1,7 +1,9 @@
 package si.um.feri.dao;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import si.um.feri.vao.Doctor;
 import si.um.feri.vao.Patient;
 
@@ -31,6 +33,8 @@ public class PatientMemoryDao implements PatientDao, Serializable {
         patientList.add(new Patient("Vratar", "Veso", "vratar@nmk.si", LocalDate.parse("1950-06-22"), "Stražim vrata!"));
     }
 
+
+
     @Override
     public List<Patient> getAll() {
         log.info("DAO: get all");
@@ -49,7 +53,17 @@ public class PatientMemoryDao implements PatientDao, Serializable {
     }
 
     @Override
-    public void save(Patient patient) {
+    public void save(Patient patient, String doctorEmail) {
+
+        Doctor exDoc = patient.getPersonalDoctor();
+        if (exDoc != null) {
+            exDoc.removePatient(patient);
+        }
+
+        DoctorMemoryDao doctorDao = DoctorMemoryDao.getInstance();
+        Doctor selectedDoctor = doctorDao.find(doctorEmail);
+        patient.setPersonalDoctor(selectedDoctor);
+
         log.info("DAO: saving " + patient);
         if (find(patient.getEmail()) != null) {
             log.info("DAO: editing " + patient);
@@ -57,10 +71,20 @@ public class PatientMemoryDao implements PatientDao, Serializable {
         }
         patientList.add(patient);
 
+        if (patient.getPersonalDoctor() != null) {
+            selectedDoctor = doctorDao.find(patient.getPersonalDoctor().getEmail());
+            selectedDoctor.addPatient(patient);
+        }
+
     }
 
     @Override
     public void delete(Patient patient) {
+        DoctorMemoryDao doctorDao = DoctorMemoryDao.getInstance();
         patientList.remove(patient);
+        if (patient.getPersonalDoctor() != null) {
+            Doctor selectedDoctor = doctorDao.find(patient.getPersonalDoctor().getEmail());
+            selectedDoctor.removePatient(patient);
+        }
     }
 }

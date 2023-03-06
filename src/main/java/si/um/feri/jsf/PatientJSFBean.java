@@ -19,10 +19,8 @@ import java.util.stream.Collectors;
 @ViewScoped
 @Data
 public class PatientJSFBean implements Serializable {
-    private static final long serialVersionUID = -8979220536758073133L;
     private final Date todayDate = new Date();
     Logger log = Logger.getLogger(PatientMemoryDao.class.toString());
-
     private PatientMemoryDao patientDao = PatientMemoryDao.getInstance();
     private DoctorMemoryDao doctorDao = DoctorMemoryDao.getInstance();
 
@@ -35,18 +33,7 @@ public class PatientJSFBean implements Serializable {
     }
 
     public String savePatient() {
-        Doctor exDoc = patient.getPersonalDoctor();
-        if (exDoc != null) {
-            exDoc.removePatient(patient);
-        }
-        Doctor selectedDoctor = doctorDao.find(doctorEmail);
-        patient.setPersonalDoctor(selectedDoctor);
-
-        if (patient.getPersonalDoctor() != null) {
-            selectedDoctor = doctorDao.find(patient.getPersonalDoctor().getEmail());
-            selectedDoctor.addPatient(patient);
-        }
-        patientDao.save(patient);
+        patientDao.save(patient, doctorEmail);
         return "all";
     }
 
@@ -64,10 +51,6 @@ public class PatientJSFBean implements Serializable {
 
     public void delete(Patient patient) {
         patientDao.delete(patient);
-        if (patient.getPersonalDoctor() != null) {
-            Doctor selectedDoctor = doctorDao.find(patient.getPersonalDoctor().getEmail());
-            selectedDoctor.removePatient(patient);
-        }
     }
 
     public List<Patient> getPatientsWithNoDoctor() {
