@@ -3,12 +3,14 @@ package si.um.feri.jsf;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
+import jakarta.mail.MessagingException;
 import lombok.Data;
 import si.um.feri.dao.DoctorMemoryDao;
 import si.um.feri.dao.PatientMemoryDao;
 import si.um.feri.vao.Doctor;
 import si.um.feri.vao.Patient;
 
+import javax.naming.NamingException;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -32,7 +34,7 @@ public class PatientJSFBean implements Serializable {
         return patientDao.getAll();
     }
 
-    public String savePatient() {
+    public String savePatient() throws MessagingException, NamingException {
         patientDao.save(patient, doctorEmail);
         return "all";
     }

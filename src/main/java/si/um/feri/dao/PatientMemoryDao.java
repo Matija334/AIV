@@ -4,9 +4,12 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import jakarta.mail.MessagingException;
+import si.um.feri.Vmesni;
 import si.um.feri.vao.Doctor;
 import si.um.feri.vao.Patient;
 
+import javax.naming.NamingException;
 import javax.print.Doc;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -28,9 +31,9 @@ public class PatientMemoryDao implements PatientDao, Serializable {
     }
 
     private PatientMemoryDao(){
-        patientList.add(new Patient("Gospod", "Debevec", "pacient@nmk.si", LocalDate.parse("1975-01-01"), "Rabim Franjo!"));
-        patientList.add(new Patient("Reševalec", "Mile", "resevalec@nmk.si", LocalDate.parse("1983-05-13"), "Vozim rešilca!"));
-        patientList.add(new Patient("Vratar", "Veso", "vratar@nmk.si", LocalDate.parse("1950-06-22"), "Stražim vrata!"));
+        patientList.add(new Patient("Gospod", "Debevec", "debevec@ehealth.com", LocalDate.parse("1975-01-01"), "Rabim Franjo!"));
+        patientList.add(new Patient("Reševalec", "Mile", "resevalec@ehealth.com", LocalDate.parse("1983-05-13"), "Vozim rešilca!"));
+        patientList.add(new Patient("Vratar", "Veso", "vratar@ehealth.com", LocalDate.parse("1950-06-22"), "Stražim vrata!"));
     }
 
 
@@ -51,7 +54,7 @@ public class PatientMemoryDao implements PatientDao, Serializable {
     }
 
     @Override
-    public void save(Patient patient, String doctorEmail) {
+    public void save(Patient patient, String doctorEmail) throws MessagingException, NamingException {
         //Removing old personal doctor
         Doctor exDoc = patient.getPersonalDoctor();
         if (exDoc != null)
@@ -62,7 +65,12 @@ public class PatientMemoryDao implements PatientDao, Serializable {
 
         //Setting new personal doctor. Find by email
         Doctor selectedDoctor = doctorDao.find(doctorEmail);
-        patient.setPersonalDoctor(selectedDoctor);
+        if(selectedDoctor != null) {
+            boolean free = selectedDoctor.getPatientQuota() > selectedDoctor.getPatientList().size();
+            patient = new Vmesni().selectDoctor(patient, selectedDoctor, free);
+        }
+
+        //patient.setPersonalDoctor(selectedDoctor);
 
         log.info("DAO: saving " + patient);
 

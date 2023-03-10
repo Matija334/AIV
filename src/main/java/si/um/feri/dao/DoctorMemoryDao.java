@@ -3,6 +3,7 @@ package si.um.feri.dao;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Inject;
+import si.um.feri.EmailSender;
 import si.um.feri.vao.Doctor;
 import si.um.feri.vao.Patient;
 
@@ -26,9 +27,10 @@ public class DoctorMemoryDao implements DoctorDao, Serializable {
     }
 
     private DoctorMemoryDao(){
-        doctorList.add(new Doctor("Doktor", "Jarc", "doktor.jarc@nmk.si",10));
-        doctorList.add(new Doctor("Doktor", "Muc", "doktor.muc@nmk.si",5));
-        doctorList.add(new Doctor("Doktor", "Ščinkavc", "doktor.scinkavc@nmk.si",3));
+        doctorList.add(new Doctor("Doktor", "Jarc", "jarc@ehealth.com",10));
+        doctorList.add(new Doctor("Doktor", "Muc", "muc@ehealth.com",5));
+        doctorList.add(new Doctor("Doktor", "Ščinkavc", "scinkavc@ehealth.com",3));
+        new EmailSender();
     }
 
     @Override
