@@ -6,16 +6,17 @@ import jakarta.mail.Session;
 import jakarta.mail.Transport;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
-import si.um.feri.dao.PatientMemoryDao;
+import si.um.feri.dao.PatientDaoBean;
 import si.um.feri.vao.Doctor;
 import si.um.feri.vao.Patient;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import java.io.Serializable;
 import java.util.logging.Logger;
 
-public class EmailSender {
-    Logger log = Logger.getLogger(PatientMemoryDao.class.toString());
+public class EmailSender implements Serializable {
+    Logger log = Logger.getLogger(PatientDaoBean.class.toString());
     public void send(Patient patient) throws NamingException, MessagingException {
         log.info("Posiljam email");
         final String MAIL_REPLY_TO="info@ehealth.com";

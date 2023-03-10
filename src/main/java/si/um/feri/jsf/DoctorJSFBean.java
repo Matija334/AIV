@@ -1,10 +1,13 @@
 package si.um.feri.jsf;
 
+import jakarta.ejb.EJB;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 import lombok.Data;
-import si.um.feri.dao.DoctorMemoryDao;
-import si.um.feri.dao.PatientMemoryDao;
+import si.um.feri.dao.DoctorDao;
+import si.um.feri.dao.DoctorDaoBean;
+import si.um.feri.dao.PatientDao;
+import si.um.feri.dao.PatientDaoBean;
 import si.um.feri.vao.Doctor;
 
 import java.io.Serializable;
@@ -15,11 +18,13 @@ import java.util.logging.Logger;
 @ViewScoped
 @Data
 public class DoctorJSFBean implements Serializable {
-    Logger log = Logger.getLogger(DoctorMemoryDao.class.toString());
+    Logger log = Logger.getLogger(DoctorDaoBean.class.toString());
 
-    private DoctorMemoryDao doctorDao = DoctorMemoryDao.getInstance();
+    @EJB
+    private DoctorDao doctorDao;
 
-    private PatientMemoryDao patientDao = PatientMemoryDao.getInstance();
+    @EJB
+    private PatientDao patientDao;
 
 
     private Doctor doctor = new Doctor();

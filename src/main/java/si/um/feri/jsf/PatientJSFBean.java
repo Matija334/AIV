@@ -1,13 +1,14 @@
 package si.um.feri.jsf;
 
-import jakarta.enterprise.context.SessionScoped;
+import jakarta.ejb.EJB;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 import jakarta.mail.MessagingException;
 import lombok.Data;
-import si.um.feri.dao.DoctorMemoryDao;
-import si.um.feri.dao.PatientMemoryDao;
-import si.um.feri.vao.Doctor;
+import si.um.feri.dao.DoctorDao;
+import si.um.feri.dao.DoctorDaoBean;
+import si.um.feri.dao.PatientDao;
+import si.um.feri.dao.PatientDaoBean;
 import si.um.feri.vao.Patient;
 
 import javax.naming.NamingException;
@@ -22,9 +23,12 @@ import java.util.stream.Collectors;
 @Data
 public class PatientJSFBean implements Serializable {
     private final Date todayDate = new Date();
-    Logger log = Logger.getLogger(PatientMemoryDao.class.toString());
-    private PatientMemoryDao patientDao = PatientMemoryDao.getInstance();
-    private DoctorMemoryDao doctorDao = DoctorMemoryDao.getInstance();
+    Logger log = Logger.getLogger(PatientDaoBean.class.toString());
+
+    @EJB
+    private PatientDao patientDao;
+    @EJB
+    private DoctorDao doctorDao;
 
     private Patient patient = new Patient();
     private String selectedEmail;

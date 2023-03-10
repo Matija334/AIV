@@ -1,11 +1,13 @@
 package si.um.feri.dao;
 
+import jakarta.ejb.Local;
 import jakarta.mail.MessagingException;
 import si.um.feri.vao.Patient;
 
 import javax.naming.NamingException;
 import java.util.List;
 
+@Local
 public interface PatientDao {
     List<Patient> getAll();
 
