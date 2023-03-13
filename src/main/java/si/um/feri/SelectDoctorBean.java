@@ -41,17 +41,8 @@ public class SelectDoctorBean implements SelectDoctor, Serializable {
         log.info(doctorEmail);
         Patient patient = patientDao.find(patientEmail);
         Doctor doctor = doctorDao.find(doctorEmail);
-        log.info(String.valueOf(patient));
         boolean free = doctor.getPatientQuota() > doctor.getPatientList().size();
-        if(free){
-            patient.setPersonalDoctor(doctor);
-            doctor.addPatient(patient);
-            log.info("Uspesno dodan");
-            new EmailSender().send(patient, doctor);
-        } else{
-            log.info("NAPAKAA");
-            new EmailSender().send(patient);
-        }
+        selectDoctor(patient, doctor, free);
     }
 
     @Override
