@@ -1,12 +1,19 @@
 package si.um.feri.vao;
 
+import jakarta.mail.MessagingException;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+import si.um.feri.observers.Observable;
+import si.um.feri.observers.Observer;
 
+import javax.naming.NamingException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Data
-public class Patient {
+public class Patient implements Observable {
     @NotBlank
     private String name;
     private String lastName;
@@ -14,6 +21,8 @@ public class Patient {
     private LocalDate birthday;
     private String info;
     private Doctor personalDoctor;
+
+    private List<Observer> observerList = Collections.synchronizedList(new ArrayList<>());
     public Patient() {
     }
     public Patient(String name, String lastName, String email, LocalDate birthday, String info) {
@@ -23,6 +32,23 @@ public class Patient {
         this.birthday = birthday;
         this.info = info;
         this.personalDoctor = null;
+    }
+
+    @Override
+    public void add(Observer o) {
+        observerList.add(o);
+    }
+
+    @Override
+    public void remove(Observer o) {
+        observerList.remove(o);
+    }
+
+    @Override
+    public void broadcast() throws MessagingException, NamingException {
+        for(Observer o: observerList){
+            o.action();
+        }
     }
 
     @Override

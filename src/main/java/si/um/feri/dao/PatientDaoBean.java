@@ -3,6 +3,8 @@ package si.um.feri.dao;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
 import jakarta.mail.MessagingException;
+import si.um.feri.observers.NewDoctorObserver;
+import si.um.feri.observers.OldDoctorObserver;
 import si.um.feri.SelectDoctorBean;
 import si.um.feri.vao.Doctor;
 import si.um.feri.vao.Patient;
@@ -59,16 +61,22 @@ public class PatientDaoBean implements PatientDao, Serializable {
 
     @Override
     public void save(Patient patient, String doctorEmail) throws MessagingException, NamingException {
+        if(patient.getObserverList() != null) {
+            patient.getObserverList().clear();
+        }
         //Removing old personal doctor
         Doctor exDoc = patient.getPersonalDoctor();
-        if (exDoc != null)
+        if (exDoc != null) {
             exDoc.removePatient(patient);
+            patient.add(new OldDoctorObserver(exDoc, patient));
+        }
 
         //Setting new personal doctor. Find by email
         Doctor selectedDoctor = doctorDao.find(doctorEmail);
         if(selectedDoctor != null) {
             boolean free = selectedDoctor.getPatientQuota() > selectedDoctor.getPatientList().size();
             patient = new SelectDoctorBean().selectDoctor(patient, selectedDoctor, free);
+            patient.add(new NewDoctorObserver(selectedDoctor, patient));
         }
 
         //patient.setPersonalDoctor(selectedDoctor);
@@ -89,6 +97,8 @@ public class PatientDaoBean implements PatientDao, Serializable {
             selectedDoctor = doctorDao.find(patient.getPersonalDoctor().getEmail());
             selectedDoctor.addPatient(patient);
         }
+
+        patient.broadcast();
 
     }
 

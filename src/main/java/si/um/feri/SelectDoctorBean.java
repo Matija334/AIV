@@ -27,10 +27,11 @@ public class SelectDoctorBean implements SelectDoctor, Serializable {
         if(free){
             patient.setPersonalDoctor(doctor);
             log.info("Uspesno dodan");
-            new EmailSender().send(patient, doctor);
+            EmailSender.send(patient.getEmail(), "USPESNA IZBIRA", "Uspesno ste si izbrali osebnega zdravnika!");
+            EmailSender.send(doctor.getEmail(), "NOVI PACIENT", patient.getName() + " " + patient.getLastName() + " vas je izbral kot osebnega zdravnika!");
         } else{
-            log.info("NAPAKAA");
-            new EmailSender().send(patient);
+            log.info("ZAVRNITEV, POLNA KAPACITETA");
+            EmailSender.send(patient.getEmail(), "ZAVRNITEV", "Izbran zdravnik ima zapolnjeno kapaciteto. Prosim izberite drugega osebnega zdravnika!");
         }
         return patient;
     }
