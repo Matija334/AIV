@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 @Remote
 public interface SelectDoctor extends Serializable {
-    Patient selectDoctor(Patient patient, Doctor doctor, boolean free) throws MessagingException, NamingException;
+    void selectDoctor(Patient patient, Doctor doctor, boolean free) throws MessagingException, NamingException;
 
     void selectDoctorString(String patient, String doctor) throws MessagingException, NamingException;
 

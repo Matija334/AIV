@@ -21,11 +21,12 @@ public class SelectDoctorBean implements SelectDoctor, Serializable {
 
     @EJB
     PatientDao patientDao;
-    Logger log = Logger.getLogger(PatientDaoBean.class.toString());
+    static Logger log = Logger.getLogger(PatientDaoBean.class.toString());
     @Override
-    public Patient selectDoctor(Patient patient, Doctor doctor, boolean free) throws MessagingException, NamingException {
+    public void selectDoctor(Patient patient, Doctor doctor, boolean free) throws MessagingException, NamingException {
         if(free){
             patient.setPersonalDoctor(doctor);
+            doctor.addPatient(patient);
             log.info("Uspesno dodan");
             EmailSender.send(patient.getEmail(), "USPESNA IZBIRA", "Uspesno ste si izbrali osebnega zdravnika!");
             EmailSender.send(doctor.getEmail(), "NOVI PACIENT", patient.getName() + " " + patient.getLastName() + " vas je izbral kot osebnega zdravnika!");
@@ -33,7 +34,6 @@ public class SelectDoctorBean implements SelectDoctor, Serializable {
             log.info("ZAVRNITEV, POLNA KAPACITETA");
             EmailSender.send(patient.getEmail(), "ZAVRNITEV", "Izbran zdravnik ima zapolnjeno kapaciteto. Prosim izberite drugega osebnega zdravnika!");
         }
-        return patient;
     }
 
     @Override

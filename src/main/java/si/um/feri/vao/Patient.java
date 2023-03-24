@@ -1,6 +1,7 @@
 package si.um.feri.vao;
 
 import jakarta.mail.MessagingException;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import si.um.feri.observers.Observable;
@@ -13,15 +14,21 @@ import java.util.Collections;
 import java.util.List;
 
 @Data
+@Entity
 public class Patient implements Observable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
     @NotBlank
     private String name;
     private String lastName;
     private String email;
     private LocalDate birthday;
     private String info;
+    @ManyToOne (fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Doctor personalDoctor;
-
+    @Transient
     private List<Observer> observerList = Collections.synchronizedList(new ArrayList<>());
     public Patient() {
     }
