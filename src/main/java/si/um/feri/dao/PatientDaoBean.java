@@ -13,6 +13,7 @@ import si.um.feri.observers.OldDoctorObserver;
 import si.um.feri.SelectDoctorBean;
 import si.um.feri.vao.Doctor;
 import si.um.feri.vao.Patient;
+import si.um.feri.vao.Visit;
 
 import javax.naming.NamingException;
 import java.io.Serializable;
@@ -134,6 +135,11 @@ public class PatientDaoBean implements PatientDao, Serializable {
             patient.setPersonalDoctor(null);
             em.merge(personalDoctor);
         }
+        TypedQuery<Visit> query= em.createQuery("select v from Visit v WHERE v.patient.email = :email ", Visit.class);
+        query.setParameter("email", patient.getEmail());
+        List<Visit> visits = query.getResultList();
+        for (Visit v : visits)
+            v.setPatient(null);
         // Remove patient entity
         Patient managedPatient = em.merge(patient);
         em.flush();

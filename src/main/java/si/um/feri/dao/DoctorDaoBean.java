@@ -10,6 +10,7 @@ import jakarta.persistence.TypedQuery;
 import si.um.feri.EmailSender;
 import si.um.feri.vao.Doctor;
 import si.um.feri.vao.Patient;
+import si.um.feri.vao.Visit;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -92,6 +93,11 @@ public class DoctorDaoBean implements DoctorDao, Serializable {
         List<Patient> patientList = doctor.getPatientList();
         for (Patient p : patientList)
             p.setPersonalDoctor(null);
+        TypedQuery<Visit> query= em.createQuery("select v from Visit v WHERE v.doctor.email = :email ", Visit.class);
+        query.setParameter("email", doctor.getEmail());
+        List<Visit> visits = query.getResultList();
+        for (Visit v : visits)
+            v.setDoctor(null);
 
         Doctor managedDoctor = em.merge(doctor);
         em.remove(managedDoctor);

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<ui:composition template="WEB-INF/template/template.xhtml ">
+    <ui:define name="title">Add visit</ui:define>
+    <ui:define name="style">
+        <style>
+            body {
+                background-color: #f3fafc;
+                font-family: "Verdana", sans-serif;
+            }
+
+            form {
+                display: flex;
+                flex-direction: column;
+                text-align: left;
+            }
+
+            .form-input {
+                width: 30%;
+            }
+
+            .button-container {
+                display: flex;
+                justify-content: left;
+                gap: 10px;
+            }
+
+        </style>
+    </ui:define>
+    <ui:define name="content">
+        <f:metadata>
+            <f:viewParam name="id" value="#{visits.id}"/>
+        </f:metadata>
+        <p:panel header="Visit">
+            <h:form>
+                <p:outputLabel for="doctorsMenu">Doctors:</p:outputLabel>
+                <p:selectOneMenu id="doctorsMenu" value="#{visits.doctorEmail}">
+                    <f:selectItem itemValue="" itemLabel="No doctor"/>
+                    <f:selectItems value="#{doctors.allDoctors}" var="doctor"
+                                   itemLabel="#{doctor.name} #{doctor.lastName}"
+                                   itemValue="#{doctor.email}"/>
+                </p:selectOneMenu>
+                <br/>
+                <p:outputLabel for="patientsMenu">Patients:</p:outputLabel>
+                <p:selectOneMenu id="patientsMenu" value="#{visits.patientEmail}">
+                    <f:selectItem itemValue="" itemLabel="No patient"/>
+                    <f:selectItems value="#{patients.allPatients}" var="patient"
+                                   itemLabel="#{patient.name} #{patient.lastName}"
+                                   itemValue="#{patient.email}"/>
+                </p:selectOneMenu>
+                <br/>
+                <p:outputLabel for="info">Additional info:</p:outputLabel>
+                <p:inputTextarea id="info" value="#{visits.visit.details}" rows="5" cols="25" maxlength="500"
+                                 autoResize="false"/>
+                <br/>
+                <p:outputLabel for="meds">Prescriptions:</p:outputLabel>
+                <p:inputTextarea id="meds" value="#{visits.visit.prescriptions}" rows="5" cols="25" maxlength="500"
+                                 autoResize="false"/>
+                <br/>
+                <div class="button-container">
+                    <p:commandButton styleClass="form-input" value="Save"
+                                     actionListener="#{visits.saveVisit()}"
+                                     action="allVisits.xhtml?faces-redirect=true">
+                        <p:confirm header="Confirmation"
+                                   message="Do you want to save this visit?"
+                                   icon="pi pi-info-circle"/>
+                    </p:commandButton>
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes"/>
+                    </p:confirmDialog>
+
+                    <p:commandButton styleClass="form-input" value="End"
+                                     actionListener="#{visits.endVisit()}"
+                                     action="endedVisits.xhtml?faces-redirect=true">
+                        <p:confirm header="Confirmation"
+                                   message="Do you want to end this visit?"
+                                   icon="pi pi-info-circle"/>
+                    </p:commandButton>
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes"/>
+                    </p:confirmDialog>
+                </div>
+            </h:form>
+        </p:panel>
+    </ui:define>
+</ui:composition>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
