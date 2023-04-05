@@ -17,18 +17,16 @@ public class VisitImpl {
     Logger log = Logger.getLogger(VisitImpl.class.toString());
 
     private void treatmentType(Visit visit) {
-        if(Objects.equals(visit.getDetails(), "") && Objects.equals(visit.getPrescriptions(), "")){
-            visitInterface = new NoSpecialtiesStrategy();
-        }
-        else if(!Objects.equals(visit.getPrescriptions(), "") && !Objects.equals(visit.getDetails(), "")){
-            visitInterface = new DiagnosisAndPrescriptionStrategy();
-        }
-        else if(!Objects.equals(visit.getDetails(), "")){
-            visitInterface = new DiagnosisStrategy();
-        }
-        else if(!Objects.equals(visit.getPrescriptions(), "")){
+        if(!Objects.equals(visit.getPrescriptions(), "") && !Objects.equals(visit.getDetails(), "")){
             visitInterface = new PrescriptionsStrategy();
+            return;
         }
+        if(!Objects.equals(visit.getDetails(), "")){
+            visitInterface = new DiagnosisStrategy();
+            return;
+        }
+
+        visitInterface = new NoSpecialtiesStrategy();
     }
 
     public void visit(Visit visit) throws MessagingException, NamingException {

@@ -13,6 +13,7 @@ public class PrescriptionsStrategy implements VisitInterface {
     @Override
     public void endVisit(Visit visit) throws MessagingException, NamingException {
         log.info("Rabis tablete");
+        EmailSender.send(visit.getPatient().getEmail(), "Postavljena diagnoza", "Doktor: " + visit.getDoctor().getName() + " " + visit.getDoctor().getLastName() + " vam je postavil diagnozo: " + visit.getDetails());
         EmailSender.send(visit.getPatient().getEmail(), "Predpisana zdravila", "Doktor: " + visit.getDoctor().getName() + " " + visit.getDoctor().getLastName() + " vam je predpisal zdravila: " + visit.getPrescriptions());
     }
 }

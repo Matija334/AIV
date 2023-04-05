@@ -1,5 +1,6 @@
 package si.um.feri.vao;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -12,6 +13,7 @@ import java.util.List;
 @Data
 @Entity
 public class Doctor implements Serializable {
+    @JsonbTransient
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;

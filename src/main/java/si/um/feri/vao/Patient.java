@@ -1,5 +1,6 @@
 package si.um.feri.vao;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.mail.MessagingException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -8,6 +9,7 @@ import si.um.feri.observers.Observable;
 import si.um.feri.observers.Observer;
 
 import javax.naming.NamingException;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,8 +17,8 @@ import java.util.List;
 
 @Data
 @Entity
-public class Patient implements Observable {
-
+public class Patient implements Observable, Serializable {
+    @JsonbTransient
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -26,8 +28,12 @@ public class Patient implements Observable {
     private String email;
     private LocalDate birthday;
     private String info;
+    @Transient
+    private String docEmail;
+
     @ManyToOne (fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Doctor personalDoctor;
+    @JsonbTransient
     @Transient
     private List<Observer> observerList = Collections.synchronizedList(new ArrayList<>());
     public Patient() {
@@ -39,6 +45,7 @@ public class Patient implements Observable {
         this.birthday = birthday;
         this.info = info;
         this.personalDoctor = null;
+        this.docEmail = "";
     }
 
     @Override
