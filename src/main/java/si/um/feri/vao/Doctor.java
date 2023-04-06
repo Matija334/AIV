@@ -23,6 +23,7 @@ public class Doctor implements Serializable {
     private String email;
     private int patientQuota;
 
+    @JsonbTransient
     @OneToMany(mappedBy = "personalDoctor", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Patient> patientList = Collections.synchronizedList(new ArrayList<>());
 

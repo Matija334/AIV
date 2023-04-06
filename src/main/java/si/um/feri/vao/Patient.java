@@ -30,7 +30,7 @@ public class Patient implements Observable, Serializable {
     private String info;
     @Transient
     private String docEmail;
-
+    @JsonbTransient
     @ManyToOne (fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Doctor personalDoctor;
     @JsonbTransient
