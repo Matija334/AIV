@@ -13,6 +13,7 @@ public interface PatientDao {
 
     Patient find(String email);
 
+    void saveByEmail(String patientEmail, String doctorEmail) throws MessagingException, NamingException;
     void save(Patient patient, String doctorEmail) throws MessagingException, NamingException;
 
     void delete(Patient patient);

@@ -80,6 +80,12 @@ public class PatientDaoBean implements PatientDao, Serializable {
     }
 
     @Override
+    public void saveByEmail(String patientEmail, String doctorEmail) throws MessagingException, NamingException {
+        Patient p = find(patientEmail);
+        save(p, doctorEmail);
+    }
+
+    @Override
     public void save(Patient patient, String doctorEmail) throws MessagingException, NamingException {
         if(patient.getObserverList() != null) {
             patient.getObserverList().clear();
